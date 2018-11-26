@@ -1,29 +1,49 @@
 import tkinter as tk
 from mysql.connector import (connection)
 
+theme = {
+    '0':'#1a1e26',  # dusk
+    '1':'#383f51',  # charcoal
+    '2':'#dddbf1',  # azurish white
+    '3':'#3c4f76',  # independence
+    '4':'#d1beb0',  # dark vanilla
+    '5':'#ab9f9d'   # rose quartz
+}
+
 # make a page
 class Page(tk.Frame):
     # Frame is a rectangular area of a window
     # inherit page from Frame as a simple superclass to other Pages
-    # it's only method is show(), which simply pulls it to the top
-    #   of the viewing stack
 
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master=master, cnf=cnf, **kw)
-        #auto-generated initializer method
-        # note: all tkinter objects need a master Frame/Window/Whatever
-        # with which to latch onto. see ROOT
+        '''
+        auto-generated initializer method
+         note: all tkinter objects need a master Frame/Window/Whatever
+         with which to latch onto. see ROOT
+        ''' 
     
     def show(self):
         self.lift()
+        '''
+        show will do the lift method, which lifts to the top of window
+        stack
+        '''  
 
-
-
-# Simple record pull
-class Page1(Page):
+# Home Page
+class Home(Page):
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master=master, cnf=cnf, **kw)
+        # initializing photo banner
+        banner = tk.PhotoImage(file="house.png")
+        banner_label = tk.Label(self, image=banner)
+        banner_label.image = banner
+        banner_label.pack(side='top',fill='both',expand=True)
 
+# Simple record pull
+class PKLookup(Page):
+    def __init__(self, master=None, cnf={}, **kw):
+        super().__init__(master=master, cnf=cnf, **kw)
     pass
 
 
@@ -33,6 +53,7 @@ class Page1(Page):
 class MainView(tk.Frame):
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master=master, cnf=cnf, **kw)
+        
         '''
         This mainview class may or may not be
         an actual main view. Instead of calling
@@ -42,16 +63,24 @@ class MainView(tk.Frame):
         '''
         self.winfo_toplevel().title("Toolhouse Search")
 
-        # initialize pages
-        #   page1 = page(self)
-        #   ...
 
+        # initialize pages
+        p1 = Home(self)
+        #   ...
+        
         # initialize naviagation frames
         buttonframe = tk.Frame(self)    # to hold buttons
-        containter = tk.Frame(self)     # to hold form
-        buttonframe.grid(row=0, column=0, sticky = 'W')
-        
+        container = tk.Frame(self)      # to hold the page-content stuff
+        buttonframe.pack(side="top", fill="x", expand=False)    # pack the buttons up top
+        container.pack(side="top", fill="both", expand=True)    # put contianer underneath
 
+        p1.place(in_=container)
+        
+        b1 = tk.Button(buttonframe, text='Home',command=p1.lift)
+        b1.pack(side='left')
+
+
+        p1.show()
 ### Initialize 
 
 '''
@@ -60,7 +89,10 @@ A python convention is to check if it's the main,
 then execute what should be main-type code stuff
 '''
 
+
 if __name__ == "__main__":
+    square_side = 565
+    size = str(square_side) + "x" + str(square_side)
     root = tk.Tk()
     # ROOT
     # proper tkinter programs have a root which the other
@@ -68,5 +100,5 @@ if __name__ == "__main__":
     #   are rooted into
     main = MainView(root)
     main.pack(side="top", fill="both", expand=True)
-    root.wm_geometry("400x400")
+    root.wm_geometry(size)
     root.mainloop()

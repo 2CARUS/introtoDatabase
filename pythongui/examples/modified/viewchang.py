@@ -13,7 +13,9 @@ class Page(tk.Frame):
 class Page1(Page):
     def __init__(self, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
-        label = tk.Label(self, text="This is page 1")
+        img = tk.PhotoImage(file='house.png')
+        label = tk.Label(self, image=img)
+        label.image = img       # IMPORTANT
         label.pack(side="top", fill="both", expand=True)
 
 
