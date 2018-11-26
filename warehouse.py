@@ -1,4 +1,4 @@
-import tkinter
+import tkinter as tk
 from mysql.connector import (connection)
 
 # Function Definitions:
@@ -11,8 +11,8 @@ from mysql.connector import (connection)
 # main:
 
 
-# create baseline window
-root = tkinter.Tk()
+# create baseline windows
+root = tk.Tk()
 
 
 # create window navigation buttons
