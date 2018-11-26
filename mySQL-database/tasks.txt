@@ -3,4 +3,4 @@ Please do these things
 - deploy this database onto the real internet
 - make a new text file with host, username, password, etc
 
-ok
+DEPLOY ON HEROKU :)
