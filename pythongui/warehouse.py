@@ -1,4 +1,5 @@
 import tkinter as tk
+import pandas as pd #may be needed to display information from SQL
 from mysql.connector import (connection)
 
 theme = {
@@ -66,6 +67,7 @@ class MainView(tk.Frame):
 
         # initialize pages
         p1 = Home(self)
+        p2 = PKLookup(self)
         #   ...
         
         # initialize naviagation frames
@@ -74,10 +76,17 @@ class MainView(tk.Frame):
         buttonframe.pack(side="top", fill="x", expand=False)    # pack the buttons up top
         container.pack(side="top", fill="both", expand=True)    # put contianer underneath
 
+        # placing pages inside content container
         p1.place(in_=container)
+        p2.place(in_=container)
         
+        # create buttons to navigate to pages
         b1 = tk.Button(buttonframe, text='Home',command=p1.lift)
+        b2 = tk.Button(buttonframe, text='Single Tool Lookup',command=p2.lift)
+
+        # packing buttons into button frame
         b1.pack(side='left')
+        b2.pack(side='left')
 
 
         p1.show()
