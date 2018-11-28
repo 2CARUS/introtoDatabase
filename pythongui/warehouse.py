@@ -1,5 +1,5 @@
 import tkinter as tk
-import pandas as pd #may be needed to display information from SQL
+import pandas as pd # may be needed to display information from SQL
 from mysql.connector import (connection)
 
 theme = {
@@ -45,7 +45,8 @@ class Home(Page):
 class PKLookup(Page):
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master=master, cnf=cnf, **kw)
-    pass
+        label = tk.Label(self, text='This the primary key lookup')
+        label.pack(side='top',fill='both',expand=True)
 
 
 
@@ -78,7 +79,7 @@ class MainView(tk.Frame):
 
         # placing pages inside content container
         p1.place(in_=container)
-        p2.place(in_=container)
+        p2.place(in_=container, x=0,y=0,relwidth=.7,relheight=1)
         
         # create buttons to navigate to pages
         b1 = tk.Button(buttonframe, text='Home',command=p1.lift)
