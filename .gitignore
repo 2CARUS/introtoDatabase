@@ -105,3 +105,4 @@ venv.bak/
 .vscode/settings.json
 pythongui/.vscode/settings.json
 pythongui/examples/echo_server.py
+pythongui/examples/modified/hide.py

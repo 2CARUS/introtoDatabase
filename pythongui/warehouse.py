@@ -1,5 +1,6 @@
 import tkinter as tk
-import pandas as pd # may be needed to display information from SQL
+# import pandas as pd 
+# may be needed to display information from SQL
 from mysql.connector import (connection)
 
 theme = {
@@ -10,6 +11,8 @@ theme = {
     '4':'#d1beb0',  # dark vanilla
     '5':'#ab9f9d'   # rose quartz
 }
+
+
 
 # make a page
 class Page(tk.Frame):
@@ -23,30 +26,58 @@ class Page(tk.Frame):
          note: all tkinter objects need a master Frame/Window/Whatever
          with which to latch onto. see ROOT
         ''' 
-    
     def show(self):
         self.lift()
         '''
         show will do the lift method, which lifts to the top of window
         stack
-        '''  
+        ''' 
 
 # Home Page
 class Home(Page):
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master=master, cnf=cnf, **kw)
-        # initializing photo banner
-        banner = tk.PhotoImage(file="house.png")
-        banner_label = tk.Label(self, image=banner)
-        banner_label.image = banner
-        banner_label.pack(side='top',fill='both',expand=True)
+        intro_text = 'Welcome! Please choose from the options above to navigate the warehouse'
+        intro=tk.Label(self,text=intro_text)
+        intro.config(font='none 12 bold',bg=theme['4'])
+        intro.pack(side='right')
+        boxCover = tk.Frame(self, bg=theme['4'])
+        boxCover.pack(side='top')
 
 # Simple record pull
 class PKLookup(Page):
     def __init__(self, master=None, cnf={}, **kw):
         super().__init__(master=master, cnf=cnf, **kw)
-        label = tk.Label(self, text='This the primary key lookup')
-        label.pack(side='top',fill='both',expand=True)
+        intro_text = '''
+        Enter the unique ID of the tool you're searching for            
+        '''
+        intro = tk.Label(self,text=intro_text,bg=theme['5'],fg=theme['2'])
+        intro.config(font='none 12 bold')
+        intro.pack()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -65,25 +96,35 @@ class MainView(tk.Frame):
         '''
         self.winfo_toplevel().title("Toolhouse Search")
 
-
+        self.config(bg=theme['5'])
         # initialize pages
         p1 = Home(self)
         p2 = PKLookup(self)
         #   ...
         
         # initialize naviagation frames
-        buttonframe = tk.Frame(self)    # to hold buttons
-        container = tk.Frame(self)      # to hold the page-content stuff
-        buttonframe.pack(side="top", fill="x", expand=False)    # pack the buttons up top
-        container.pack(side="top", fill="both", expand=True)    # put contianer underneath
+        buttonframe = tk.Frame(self,bg=theme['5'])    # to hold buttons
+        bannerframe = tk.Frame(self,bg='black',height='200',width='600')    # to hold the banner
+        content = tk.Frame(self,bg=theme['2'],height='800')      # to hold the page-content stuff
 
-        # placing pages inside content container
-        p1.place(in_=container)
-        p2.place(in_=container, x=0,y=0,relwidth=.7,relheight=1)
+        buttonframe.pack    (side="top", fill="x", expand=False)    # pack the buttons up top
+        bannerframe.pack    (side='top',fill='y',expand=True)    # pack the banner up top
+        content.pack      (side="top", fill="both", expand=True)  # put contianer underneath
+
+        # placing pages inside content content
+        p1.place(in_=content)
+        # p2.place(in_=content, x=0,y=0,relwidth=.7,relheight=1)
+        p2.place(in_=content)
         
+        # create banner and put into bannerframe under the buttons
+        banner = tk.PhotoImage(file='house.png')
+        banner_label = tk.Label(bannerframe, image=banner)
+        banner_label.image = banner
+        banner_label.pack()
+
         # create buttons to navigate to pages
-        b1 = tk.Button(buttonframe, text='Home',command=p1.lift)
-        b2 = tk.Button(buttonframe, text='Single Tool Lookup',command=p2.lift)
+        b1 = tk.Button(buttonframe,bg=theme['3'],fg=theme['2'],command=p1.show,text='Home')
+        b2 = tk.Button(buttonframe,bg=theme['3'],fg=theme['2'],command=p2.show,text='Single Tool Lookup')
 
         # packing buttons into button frame
         b1.pack(side='left')
@@ -91,6 +132,7 @@ class MainView(tk.Frame):
 
 
         p1.show()
+
 ### Initialize 
 
 '''
@@ -101,7 +143,7 @@ then execute what should be main-type code stuff
 
 
 if __name__ == "__main__":
-    square_side = 565
+    square_side = 604
     size = str(square_side) + "x" + str(square_side)
     root = tk.Tk()
     # ROOT

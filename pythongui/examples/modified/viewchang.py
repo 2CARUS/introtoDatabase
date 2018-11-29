@@ -13,6 +13,7 @@ class Page(tk.Frame):
 class Page1(Page):
     def __init__(self, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
+        self.config(bg='black')
         img = tk.PhotoImage(file='house.png')
         label = tk.Label(self, image=img)
         label.image = img       # IMPORTANT
