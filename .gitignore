@@ -104,6 +104,3 @@ venv.bak/
 .mypy_cache/
 .vscode/settings.json
 pythongui/.vscode/settings.json
-pythongui/examples/echo_server.py
-pythongui/examples/modified/hide.py
-pythongui/examples/modified/example.py
