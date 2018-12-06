@@ -4,20 +4,19 @@
 #   then learn efficiencies
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sqlite3 as s3
-
-
-
+from PyQt5.QtCore import pyqtSlot
+import sqlite3
 class Ui_toolhouse(object):
     
-    # @pyqtSlot()
+    @pyqtSlot()
     def clear_table(self):
         print ('clearing table')
+        pass
 
     def get_inventory(self):
         
         pass
-
+    
     def setupUi(self, toolhouse):
 
         # create base window
