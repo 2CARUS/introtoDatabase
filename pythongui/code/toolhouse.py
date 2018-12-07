@@ -3,7 +3,7 @@
 # Do things the hard way for a long time
 #   then learn efficiencies
 
-from PyQt5.QtCore import pyqtSlot
+# from PyQt5.QtCore import pyqtSlot
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3 as s3
 
@@ -22,8 +22,8 @@ class Ui_toolhouse(object):
     # @pyqtSlot() hey man this thing broke the program
     #   unsure if needed
     def get_all_products(self):
-        query = 'SELECT * FROM PRODUCT'
-        result = self.connection.execute(query)
+        self.query = 'SELECT * FROM PRODUCT'
+        result = self.connection.execute(self.query)
 
         for row_number, row_data in enumerate(result):
             self.tableWidget.insertRow(row_number)
@@ -37,10 +37,14 @@ class Ui_toolhouse(object):
                 )
         
         # TODO use PRAGMA table info to get table headings
+        self.query
+        pass
 
     def get_store_names(self):
         
         pass
+
+
     def setupUi(self, toolhouse):
         # establish database connection
         self.database_connect()
@@ -245,7 +249,7 @@ class Ui_toolhouse(object):
 
         # create clear table button
         self.pushButton_3 = QtWidgets.QPushButton(toolhouse)
-        self.pushButton_3.setGeometry(QtCore.QRect(810, 1130, 221, 46))
+        self.pushButton_3.setGeometry(QtCore.QRect(1210, 1130, 221, 46))
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_3.clicked.connect(self.clear_table)
 
