@@ -37,7 +37,7 @@ class Ui_toolhouse(object):
                 )
         
         # TODO use PRAGMA table info to get table headings
-        self.query
+        self.query = 'PRAGMA table_info(product)'
         pass
 
     def get_store_names(self):
