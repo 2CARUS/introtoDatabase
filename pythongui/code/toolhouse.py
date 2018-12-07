@@ -3,26 +3,48 @@
 # Do things the hard way for a long time
 #   then learn efficiencies
 
+from PyQt5.QtCore import pyqtSlot
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3 as s3
 
 
 
 class Ui_toolhouse(object):
-    
+    def database_connect(self):
+        self.connection = s3.connect('toolhouse.db')
+
     # @pyqtSlot()
     def clear_table(self):
-        print ('clearing table')
+        self.tableWidget.clearContents()
 
-    def get_inventory(self):
+    # @pyqtSlot() hey man this thing broke the program
+    #   unsure if needed
+    def get_all_products(self):
+        query = 'SELECT * FROM PRODUCT'
+        result = self.connection.execute(query)
+
+        for row_number, row_data in enumerate(result):
+            self.tableWidget.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableWidget.setItem(
+                    row_number,
+                    column_number,
+                    QtWidgets.QTableWidgetItem(
+                        str(data)
+                    )
+                )
+
+    # @pyqtSlot()
+    def get_store_names(self):
         
         pass
-
     def setupUi(self, toolhouse):
+        # establish database connection
+        self.database_connect()
 
         # create base window
         toolhouse.setObjectName("toolhouse")
-        toolhouse.resize(1049, 1189)
+        toolhouse.resize(1449, 1189)
         self.tabWidget = QtWidgets.QTabWidget(toolhouse)
         self.tabWidget.setGeometry(QtCore.QRect(0, 0, 1401, 701))
         font = QtGui.QFont()
@@ -105,6 +127,8 @@ class Ui_toolhouse(object):
         font.setPointSize(12)
         self.lineEdit.setFont(font)
         self.lineEdit.setObjectName("lineEdit")
+
+        ##### and so on and so forth. mostly following documentation
         self.label_3 = QtWidgets.QLabel(self.tab_2)
         self.label_3.setGeometry(QtCore.QRect(20, 310, 241, 41))
         font = QtGui.QFont()
@@ -123,9 +147,13 @@ class Ui_toolhouse(object):
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_4 = QtWidgets.QWidget()
         self.tab_4.setObjectName("tab_4")
+        
+        # create get all products button
         self.pushButton_5 = QtWidgets.QPushButton(self.tab_4)
         self.pushButton_5.setGeometry(QtCore.QRect(0, 570, 241, 81))
         self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_5.clicked.connect(self.get_all_products)
+
         self.pushButton_7 = QtWidgets.QPushButton(self.tab_4)
         self.pushButton_7.setGeometry(QtCore.QRect(780, 370, 161, 46))
         self.pushButton_7.setObjectName("pushButton_7")
@@ -204,12 +232,12 @@ class Ui_toolhouse(object):
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.tabWidget.addTab(self.tab_9, "")
         self.tableWidget = QtWidgets.QTableWidget(toolhouse)
-        self.tableWidget.setGeometry(QtCore.QRect(10, 710, 1031, 401))
+        self.tableWidget.setGeometry(QtCore.QRect(10, 710, 1431, 401))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.tableWidget.setFont(font)
         self.tableWidget.setRowCount(10)
-        self.tableWidget.setColumnCount(10)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setObjectName("tableWidget")
         self.pushButton_3 = QtWidgets.QPushButton(toolhouse)
         self.pushButton_3.setGeometry(QtCore.QRect(810, 1130, 221, 46))
@@ -220,6 +248,8 @@ class Ui_toolhouse(object):
         QtCore.QMetaObject.connectSlotsByName(toolhouse)
 
     def retranslateUi(self, toolhouse):
+
+        # this sets all the text and HTML spacing of the widgets in the window
         _translate = QtCore.QCoreApplication.translate
         toolhouse.setWindowTitle(_translate("toolhouse", "Dialog"))
         self.label.setText(_translate("toolhouse", "Select Store Name:"))
@@ -239,7 +269,7 @@ class Ui_toolhouse(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Copy an Order ID from the order list and enter it into the box to get more details</span></p></body></html>"))
         self.pushButton_6.setText(_translate("toolhouse", "SUBMIT"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("toolhouse", "Retrieve Order Details"))
-        self.pushButton_5.setText(_translate("toolhouse", "Refresh Inventory"))
+        self.pushButton_5.setText(_translate("toolhouse", "Refresh Products List"))
         self.pushButton_7.setText(_translate("toolhouse", "Insert New"))
         self.pushButton_8.setText(_translate("toolhouse", "Update Existing"))
         self.pushButton_9.setText(_translate("toolhouse", "Delete Existing"))
@@ -251,7 +281,7 @@ class Ui_toolhouse(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.875pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Here you can edit the inventory of the Toolhouse system. You can look up all the individual product ID\'s and edit their corrosponding fields. To enter new product, simply leave the product ID field blank.</span></p></body></html>"))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Here you can edit the total product storage of the whole Toolhouse system. You can look up all the individual product ID\'s and edit their corrosponding fields. To enter new product, simply leave the product ID field blank.</span></p></body></html>"))
         self.pushButton_10.setText(_translate("toolhouse", "SUBMIT"))
         self.label_15.setText(_translate("toolhouse", "Quantity:"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("toolhouse", "Inventory Edit"))
@@ -266,11 +296,24 @@ class Ui_toolhouse(object):
 
 
 if __name__ == "__main__":
+    # python main execution
     import sys
+
+    # create application window
     app = QtWidgets.QApplication(sys.argv)
+
+    # set application window of type dialog 
     toolhouse = QtWidgets.QDialog()
+
+    # creat instance of ui
     ui = Ui_toolhouse()
+
+    # call setupUI
     ui.setupUi(toolhouse)
+
+    # show the UI in the window
     toolhouse.show()
+
+    # execute the application, then async exit the window when finished
     sys.exit(app.exec_())
 

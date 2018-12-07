@@ -2,23 +2,21 @@
 
 CREATE TABLE address(
 	address_id INT(9) NOT NULL,
-    country VARCHAR(30) NOT NULL,
-    state VARCHAR(30) NOT NULL,
-    city VARCHAR(30) NOT NULL,
-    street VARCHAR(30) NOT NULL,
     building_number INT(9) NOT NULL,
-    apartment INT(5),
-    zip INT(5) NOT NULL,
+    street VARCHAR(30) NOT NULL,
+    apartment VARCHAR(15),
+    city VARCHAR(30) NOT NULL,
+    state VARCHAR(30) NOT NULL,
+    country VARCHAR(30) NOT NULL,
+    zip VARCHAR(5) NOT NULL,
     PRIMARY KEY(address_id)
 );
 
 CREATE TABLE supplier(
 	supplier_id INT(9) NOT NULL,
     supplier_name VARCHAR(30) NOT NULL,
-    supplier_phone INT(10) NOT NULL,
-    supplier_address_id INT(9) NOT NULL,
-    PRIMARY KEY(supplier_ID),
-    FOREIGN KEY(supplier_address_id) REFERENCES address(address_id)
+    supplier_phone VARCHAR(10) NOT NULL,
+    PRIMARY KEY(supplier_ID)
 );
 
 CREATE TABLE store(
