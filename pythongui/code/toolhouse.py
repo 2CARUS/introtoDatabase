@@ -13,9 +13,11 @@ class Ui_toolhouse(object):
     def database_connect(self):
         self.connection = s3.connect('toolhouse.db')
 
-    # @pyqtSlot()
+    # query = 'PRAGMA table_info(PRODUCT)'
+    ## massively important; get's the table column names
+
     def clear_table(self):
-        self.tableWidget.clearContents()
+        self.tableWidget.clear()
 
     # @pyqtSlot() hey man this thing broke the program
     #   unsure if needed
@@ -33,8 +35,9 @@ class Ui_toolhouse(object):
                         str(data)
                     )
                 )
+        
+        # TODO use PRAGMA table info to get table headings
 
-    # @pyqtSlot()
     def get_store_names(self):
         
         pass
@@ -239,9 +242,12 @@ class Ui_toolhouse(object):
         self.tableWidget.setRowCount(10)
         self.tableWidget.setColumnCount(6)
         self.tableWidget.setObjectName("tableWidget")
+
+        # create clear table button
         self.pushButton_3 = QtWidgets.QPushButton(toolhouse)
         self.pushButton_3.setGeometry(QtCore.QRect(810, 1130, 221, 46))
         self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_3.clicked.connect(self.clear_table)
 
         self.retranslateUi(toolhouse)
         self.tabWidget.setCurrentIndex(1)
