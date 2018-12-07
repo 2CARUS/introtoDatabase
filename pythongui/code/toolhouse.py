@@ -22,7 +22,7 @@ class Ui_toolhouse(object):
     # @pyqtSlot() hey man this thing broke the program
     #   unsure if needed
     def get_all_products(self):
-        self.query = 'SELECT * FROM PRODUCT'
+        self.query = 'SELECT * FROM product'
         result = self.connection.execute(self.query)
 
         for row_number, row_data in enumerate(result):
