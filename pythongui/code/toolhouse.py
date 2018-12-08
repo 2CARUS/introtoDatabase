@@ -6,17 +6,17 @@
 # from PyQt5.QtCore import pyqtSlot
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3
-import os
 
 
 
 class Ui_toolhouse(object):
 
-### generic other methods
+### methods for handling errors, queries, displays
     
     # prints error message inside table 
     def error_msg(self, e):
         err_string = (str(e.__class__) + '{0}'.format(e))
+        print (err_string)
         self.clear_table()
         self.tableWidget.setColumnCount(1)
         self.tableWidget.setRowCount(0)
@@ -40,9 +40,6 @@ class Ui_toolhouse(object):
             return i
         except ValueError as e:
             self.error_msg(e)
-
-### These methods take in a query, and display to table widget
-    ###     any manipulation of the data is all done in SQL statements
 
     # makes connection to database
     def database_connect(self):    
@@ -101,16 +98,39 @@ class Ui_toolhouse(object):
         except sqlite3.OperationalError as e:
             self.error_msg(e)
 
+    # case where pid in 3rd tab is populated
+    def product_populate(self, product):
+        
+        # place product tuple values into appropriate fields
+        self.lineEdit_5.setText(str(product[0]))
+        self.lineEdit_2.setText(str(product[1]))
+        self.doubleSpinBox.setValue(float(product[2]))
+        self.plainTextEdit_2.setPlainText(str(product[3]))
+        self.spinBox.setValue(int(product[4]))
 
 ### These methods are the ones that in general have the SQL statements in them
 
+    # deletes product of given pid
+    def delete_pid(self):
+        pid = self.lineEdit_5.text()
+        query = 'DELETE'
+
     # accept product ID from linedit box
     def accept_pid(self):
+        pid = self.lineEdit_5.text()
+        query = 'SELECT * from product where product_id = %s' % str(pid)
 
-        
+        # does a simple query, and fetches the first row; returns tuple
+        product = None
+        try:
+            product = self.simple_query(query).fetchone()
+        except AttributeError as e:
+            self.error_msg(e)
 
-        print('accepted')
-        pass
+        if product == None:
+            pass
+        else:
+            self.product_populate(product)
 
     # retrieve order details by ID
     def get_order(self):
@@ -163,14 +183,11 @@ class Ui_toolhouse(object):
                 ''' % str(store_name)
             )
         else:
-            self.query( #TODO add adress info to this query
+            self.query(
             '''
-            SELECT store.store_name, store.store_email, store.store_phone
-            FROM store
-            WHERE
-            (
-                store.store_name = '%s'
-            )
+            SELECT store.store_name, store.store_phone, store.store_email, address.building_number, address.street, address.apartment, address.city, address.state,address.country,address.zip FROM store
+                join address on store.store_address_id = address.address_id
+                where store.store_name = '%s'
             ''' % str(store_name)
             )
 
@@ -280,7 +297,7 @@ class Ui_toolhouse(object):
 
         ## create line edit to take in order ID
         self.lineEdit = QtWidgets.QLineEdit(self.tab_2)
-        self.lineEdit.setGeometry(QtCore.QRect(170, 310, 301, 51))
+        self.lineEdit.setGeometry(QtCore.QRect(170, 310, 241, 51))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.lineEdit.setFont(font)
@@ -289,7 +306,7 @@ class Ui_toolhouse(object):
 
         ##### and so on and so forth. mostly following documentation
         self.label_3 = QtWidgets.QLabel(self.tab_2)
-        self.label_3.setGeometry(QtCore.QRect(20, 310, 241, 41))
+        self.label_3.setGeometry(QtCore.QRect(20, 310, 141, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_3.setFont(font)
@@ -324,9 +341,13 @@ class Ui_toolhouse(object):
         self.pushButton_8 = QtWidgets.QPushButton(self.tab_4)
         self.pushButton_8.setGeometry(QtCore.QRect(780, 450, 161, 46))
         self.pushButton_8.setObjectName("pushButton_8")
+
+        # delete tuple button :o
         self.pushButton_9 = QtWidgets.QPushButton(self.tab_4)
         self.pushButton_9.setGeometry(QtCore.QRect(780, 530, 161, 46))
         self.pushButton_9.setObjectName("pushButton_9")
+        self.pushButton_9.clicked.connect(self.delete_pid)
+
         self.label_4 = QtWidgets.QLabel(self.tab_4)
         self.label_4.setGeometry(QtCore.QRect(10, 240, 181, 25))
         font = QtGui.QFont()
@@ -353,9 +374,13 @@ class Ui_toolhouse(object):
         font.setWeight(50)
         self.label_13.setFont(font)
         self.label_13.setObjectName("label_13")
+
+
         self.doubleSpinBox = QtWidgets.QDoubleSpinBox(self.tab_4)
         self.doubleSpinBox.setGeometry(QtCore.QRect(200, 300, 79, 31))
         self.doubleSpinBox.setObjectName("doubleSpinBox")
+        self.doubleSpinBox.setPrefix('$')
+
         self.lineEdit_5 = QtWidgets.QLineEdit(self.tab_4)
         self.lineEdit_5.setGeometry(QtCore.QRect(260, 190, 231, 31))
         self.lineEdit_5.setObjectName("lineEdit_5")
@@ -404,6 +429,8 @@ class Ui_toolhouse(object):
         self.plainTextEdit.setGeometry(QtCore.QRect(0, 390, 751, 261))
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.tabWidget.addTab(self.tab_9, "")
+
+        # create table
         self.tableWidget = QtWidgets.QTableWidget(toolhouse)
         self.tableWidget.setGeometry(QtCore.QRect(10, 710, 1431, 401))
         font = QtGui.QFont()
