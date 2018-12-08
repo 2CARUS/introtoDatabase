@@ -114,6 +114,15 @@ class Ui_toolhouse(object):
     def delete_pid(self):
         pid = self.lineEdit_5.text()
         query = 'DELETE'
+        # TODO
+
+    # inserts new product tuple
+    def new_pid(self):
+        pass # TODO
+
+    # updates selected tuple
+    def update_pid(self):
+        pass # TODO
 
     # accept product ID from linedit box
     def accept_pid(self):
@@ -335,12 +344,17 @@ class Ui_toolhouse(object):
         self.pushButton_5.setObjectName("pushButton_5")
         self.pushButton_5.clicked.connect(self.get_all_products)
 
+        # insert tuple button
         self.pushButton_7 = QtWidgets.QPushButton(self.tab_4)
         self.pushButton_7.setGeometry(QtCore.QRect(780, 370, 161, 46))
         self.pushButton_7.setObjectName("pushButton_7")
+        self.pushButton_7.clicked.connect(self.new_pid)
+
+        # update tuple button
         self.pushButton_8 = QtWidgets.QPushButton(self.tab_4)
         self.pushButton_8.setGeometry(QtCore.QRect(780, 450, 161, 46))
         self.pushButton_8.setObjectName("pushButton_8")
+        self.pushButton_8.clicked.connect(self.update_pid)
 
         # delete tuple button :o
         self.pushButton_9 = QtWidgets.QPushButton(self.tab_4)
