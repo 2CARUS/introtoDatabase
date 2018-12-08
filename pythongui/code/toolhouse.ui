@@ -29,7 +29,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -128,11 +128,6 @@
      <item>
       <property name="text">
        <string>Inventory</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Departments</string>
       </property>
      </item>
     </widget>

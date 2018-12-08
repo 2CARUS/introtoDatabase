@@ -8,7 +8,7 @@ for row in result:
 
 # another way
 
-result = connection. execute('select * from product')
+result = connection.execute('select * from product')
 column_names = [name[0] for name in result.description]
 
 ## bingo baby
