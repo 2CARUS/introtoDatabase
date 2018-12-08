@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['toolhouse.py'],
-             pathex=['C:\\Users\\ckopp\\Documents\\docs\\fall18\\SE211\\project\\deployment'],
+             pathex=['C:\\Users\\ckopp\\Documents\\docs\\fall18\\SE211\\project\\introtoDatabase'],
              binaries=[],
              datas=[],
              hiddenimports=[],
