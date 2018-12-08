@@ -91,7 +91,8 @@ class Ui_toolhouse(object):
         self.table_update(self.simple_query(string))
 
     # take in string, try the query
-    def simple_query(self,string):
+    def simple_query(self,s):
+        string = ''''''.join(s) # to ensure single, double, or tickbacks can be used
         try:
             cursor = self.connection.execute(string)
             return cursor
@@ -106,18 +107,28 @@ class Ui_toolhouse(object):
         self.lineEdit_2.setText(str(product[1]))
         self.doubleSpinBox.setValue(float(product[2]))
         self.plainTextEdit_2.setPlainText(str(product[3]))
-        self.spinBox.setValue(int(product[4]))
 
 ### These methods are the ones that in general have the SQL statements in them
 
     # deletes product of given pid
     def delete_pid(self):
         pid = self.lineEdit_5.text()
-        query = 'DELETE'
-        # TODO
+        query = 'DELETE from PRODUCT where product_id = %s' % str(pid)
+        self.simple_query(query)
+        self.get_all_products()
 
     # inserts new product tuple
     def new_pid(self):
+        product = []
+
+        product.append(str(self.lineEdit_5.text()))
+        product.append(str(self.lineEdit_2.text()))
+        product.append(str(self.doubleSpinBox.value()))
+        product.append(str(self.plainTextEdit_2.toPlainText()))
+        product.append(str(self.spinBox.value()))
+
+        print(product)
+
         pass # TODO
 
     # updates selected tuple
@@ -200,7 +211,7 @@ class Ui_toolhouse(object):
             ''' % str(store_name)
             )
 
-    # places all store names 
+    # places all store names in tab 1
     def place_store_names(self):
         storenames = self.connection.execute(
             '''
@@ -209,6 +220,16 @@ class Ui_toolhouse(object):
         )
         for s in storenames:
             self.comboBox.addItem(str(s[0]))
+
+    # places suppplier id in tab 4
+    def place_supplier_id (self):
+        supp_id = self.connection.execute(
+            '''
+            SELECT supplier_id from supplier
+            '''
+        )
+        for s in supp_id:
+            self.comboBox_3.addItem(str(s[0]))
 
     # let's try a generalized query
     def general_query(self):
@@ -409,9 +430,15 @@ class Ui_toolhouse(object):
         self.textBrowser_5 = QtWidgets.QTextBrowser(self.tab_4)
         self.textBrowser_5.setGeometry(QtCore.QRect(10, 0, 1001, 171))
         self.textBrowser_5.setObjectName("textBrowser_5")
-        self.spinBox = QtWidgets.QSpinBox(self.tab_4)
-        self.spinBox.setGeometry(QtCore.QRect(430, 300, 61, 31))
-        self.spinBox.setObjectName("spinBox")
+
+        # combobox for supplier
+        self.comboBox_3 = QtWidgets.QComboBox(self.tab_4)
+        self.comboBox_3.setGeometry(QtCore.QRect(430, 300, 200, 31))
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.comboBox_3.setFont(font)
+        self.comboBox_3.setObjectName('comboBox_3')
+        self.place_supplier_id()
 
         # create button to accept product ID
         self.pushButton_10 = QtWidgets.QPushButton(self.tab_4)
@@ -497,7 +524,7 @@ class Ui_toolhouse(object):
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.875pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Here you can edit the total product storage of the whole Toolhouse system. You can look up all the individual product ID\'s and edit their corrosponding fields. To enter new product, simply leave the product ID field blank.</span></p></body></html>"))
         self.pushButton_10.setText(_translate("toolhouse", "Get Product"))
-        self.label_15.setText(_translate("toolhouse", "Quantity:"))
+        self.label_15.setText(_translate("toolhouse", "Supplier:"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("toolhouse", "Inventory Edit"))
         self.textBrowser_2.setHtml(_translate("toolhouse", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
