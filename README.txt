@@ -6,3 +6,9 @@ Steps to execute SE 211 Final Project:
 5. Explore the GUI and interact with buttons. Try not to break anything
 	5b. unless your plan is to break things, then by all means go ahead
 	5c. if the program crashes, simply run it again
+
+Notes:
+- all ON DELETE and ON UPDATE are set to CASCADE if they are PK of table and
+	FK to another table
+- if DELETE is specified on FK that is not part of PK, ON delete is changed
+	to SET NULL
