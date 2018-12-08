@@ -5,7 +5,8 @@
 
 # from PyQt5.QtCore import pyqtSlot
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sqlite3 as s3
+import sqlite3
+import os
 
 
 
@@ -14,7 +15,8 @@ class Ui_toolhouse(object):
 ### generic other methods
     
     # prints error message inside table 
-    def error_msg(self, err_string):
+    def error_msg(self, e):
+        err_string = (str(e.__class__) + '{0}'.format(e))
         self.clear_table()
         self.tableWidget.setColumnCount(1)
         self.tableWidget.setRowCount(0)
@@ -36,22 +38,23 @@ class Ui_toolhouse(object):
         try:
             i = int(input)
             return i
-        except ValueError:
-            self.error_msg('Integer only')
+        except ValueError as e:
+            self.error_msg(e)
 
 ### These methods take in a query, and display to table widget
     ###     any manipulation of the data is all done in SQL statements
 
     # makes connection to database
-    def database_connect(self):
-        self.connection = s3.connect('toolhouse.db')
+    def database_connect(self):    
+        self.connection = sqlite3.connect('toolhouse.db')
 
     # gets table headings from the connection exeuction, resulting in cursor
     def set_table_headings(self, cursor):
+        column_names = []
         try:
             column_names = [names[0] for names in cursor.description]
-        except TypeError:
-            self.error_msg('Python Type Err')
+        except (TypeError, UnboundLocalError) as e:
+            self.error_msg(e)
         self.tableWidget.setColumnCount(len(column_names))
         i = 0
         for name in column_names:
@@ -86,19 +89,30 @@ class Ui_toolhouse(object):
         self.tableWidget.setRowCount(5)
         self.tableWidget.setColumnCount(7)
 
-    # take in a string, and do some queries
+    # take in a string, and do some via other method, and update table
     def query(self, string):
+        self.table_update(self.simple_query(string))
+
+    # take in string, try the query
+    def simple_query(self,string):
         try:
             cursor = self.connection.execute(string)
-            self.table_update(cursor)
-        except s3.OperationalError:
-            self.error_msg('SQLITE3 Operational Error')
-
-
+            return cursor
+        except sqlite3.OperationalError as e:
+            self.error_msg(e)
 
 
 ### These methods are the ones that in general have the SQL statements in them
 
+    # accept product ID from linedit box
+    def accept_pid(self):
+
+        
+
+        print('accepted')
+        pass
+
+    # retrieve order details by ID
     def get_order(self):
         orderID = self.lineEdit.text()
 
@@ -133,11 +147,32 @@ class Ui_toolhouse(object):
     def get_store_info(self):
         store_name = self.comboBox.currentText()
         request = self.comboBox_2.currentText()
-
-        self.query()
-
-        print(store_name,'\n',request)
-        pass
+        if request == 'Inventory':
+            self.query(
+                '''
+                SELECT store.store_name, product.product_name, inventory.amount
+                FROM store, product, inventory
+                WHERE 
+                (
+                    inventory.store_id = store.store_id
+                    AND
+                    inventory.product_id = product.product_id
+                    AND
+                    store.store_name = '%s'
+                )
+                ''' % str(store_name)
+            )
+        else:
+            self.query( #TODO add adress info to this query
+            '''
+            SELECT store.store_name, store.store_email, store.store_phone
+            FROM store
+            WHERE
+            (
+                store.store_name = '%s'
+            )
+            ''' % str(store_name)
+            )
 
     # places all store names 
     def place_store_names(self):
@@ -153,6 +188,7 @@ class Ui_toolhouse(object):
     def general_query(self):
         user_query = self.plainTextEdit.toPlainText()
         ## extremely vulerable to sql injection
+        #TODO if insert or delete, don't update tablwidget somehow; probably simple query here
         self.query(user_query)
 
 # UI stuff
@@ -337,9 +373,13 @@ class Ui_toolhouse(object):
         self.spinBox = QtWidgets.QSpinBox(self.tab_4)
         self.spinBox.setGeometry(QtCore.QRect(430, 300, 61, 31))
         self.spinBox.setObjectName("spinBox")
+
+        # create button to accept product ID
         self.pushButton_10 = QtWidgets.QPushButton(self.tab_4)
         self.pushButton_10.setGeometry(QtCore.QRect(500, 190, 150, 31))
         self.pushButton_10.setObjectName("pushButton_10")
+        self.pushButton_10.clicked.connect(self.accept_pid)
+        
         self.label_15 = QtWidgets.QLabel(self.tab_4)
         self.label_15.setGeometry(QtCore.QRect(310, 300, 111, 25))
         font = QtGui.QFont()
@@ -389,8 +429,8 @@ class Ui_toolhouse(object):
         self.label.setText(_translate("toolhouse", "Select Store Name:"))
         self.label_2.setText(_translate("toolhouse", "Please select a store and catagory to see details for that store"))
         self.label_5.setText(_translate("toolhouse", "Select Store Detail:"))
-        self.comboBox_2.setItemText(0, _translate("toolhouse", "Contact Info"))
-        self.comboBox_2.setItemText(1, _translate("toolhouse", "Inventory"))
+        self.comboBox_2.setItemText(0, _translate("toolhouse", "Inventory"))
+        self.comboBox_2.setItemText(1, _translate("toolhouse", "Store Details"))
         self.pushButton_11.setText(_translate("toolhouse", "Get Store Info"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("toolhouse", "Single Store Lookup"))
         self.pushButton.setText(_translate("toolhouse", "Get All Orders"))
