@@ -281,10 +281,7 @@ UPDATE product
     def general_query(self):
         user_query = self.plainTextEdit.toPlainText()
         ## extremely vulerable to sql injection
-        self.error_msg('Error: work in progress')
-        # prase user_query
-        ## SELECT, call self.query
-        ## CREATE, UPDATE, DELETE, call self.simple_query
+        self.simple_query(user_query)
 
 # UI stuff
     def setupUi(self, toolhouse):
@@ -581,7 +578,7 @@ UPDATE product
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.875pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Enter your perfect SQL Query, and get tables (or cause injection attacks)</span></p></body></html>"))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Enter your perfect SQL Query, and get tables (or cause injection attacks) Please, use semicolons;</span></p></body></html>"))
         self.pushButton_2.setText(_translate("toolhouse", "SUBMIT"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_9), _translate("toolhouse", "Advanced Lookup"))
         self.pushButton_3.setText(_translate("toolhouse", "Clear table"))

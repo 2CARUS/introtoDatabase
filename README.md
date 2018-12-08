@@ -1,9 +1,4 @@
 # introtoDatabase
-SE 211 Project
-
-Caleb K, Farhat S, Ryan M, Andrew N
-
-
 
 Steps to execute SE 211 Final Project:
 
@@ -20,6 +15,23 @@ Steps to execute SE 211 Final Project:
 6. Double click this file
 
 
+In the case where the toolhouse.db is irreparable:
+
+0. Close the program
+
+1. Naviage to folder: introtoDatabase
+
+2. Copy file: toolhouse.db
+
+3. Navigate to folder: dist
+
+4. Naviage to folder: toolhouse
+
+5. Paste toolhouse.db into dist
+
+6. Run toolhouse.exe again
+
+
 Notes:
 
 - In the case where a table's composite PK is also a FK
@@ -30,3 +42,7 @@ Notes:
 - In the case where a table simple has a FK
 
         ON DELETE is changed to SET NULL
+
+SE 211 Project
+
+Caleb K, Farhat S, Ryan M, Andrew N
