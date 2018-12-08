@@ -281,7 +281,7 @@ UPDATE product
     def general_query(self):
         user_query = self.plainTextEdit.toPlainText()
         ## extremely vulerable to sql injection
-        print('work in progress')
+        self.error_msg('Error: work in progress')
         # prase user_query
         ## SELECT, call self.query
         ## CREATE, UPDATE, DELETE, call self.simple_query
