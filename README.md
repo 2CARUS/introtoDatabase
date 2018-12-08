@@ -1,16 +1,27 @@
 # introtoDatabase
 SE 211 Project
-\nCaleb K, Farhat S, Ryan M, Andrew N
-\nCheck README.txt for more detailed info
+Caleb K, Farhat S, Ryan M, Andrew N
+Check README.txt for more detailed info
 
-\nSteps to execute SE 211 Final Project:
-\n1. Navigate to folder: dist
-\n2. Navigate to folder: toolhouse
-\n3. Scroll down to: toolhouse.exe (windows type 'Application')
-\n4. Double click this file
-\n\n
-\nNotes:
-\n- In the case where a table's composite PK is also a FK
-\n\t ON DELETE and ON UPDATE are set to CASCASE
-\n- In the case where a table simple has a FK
-\n\t ON DELETE is changed to SET NULL
+
+Steps to execute SE 211 Final Project:
+
+1. Navigate to folder: dist
+
+2. Navigate to folder: toolhouse
+
+3. Scroll down to: toolhouse.exe (windows type 'Application')
+
+4. Double click this file
+
+
+Notes:
+
+- In the case where a table's composite PK is also a FK
+
+ON DELETE and ON UPDATE are set to CASCASE
+
+
+- In the case where a table simple has a FK
+
+ON DELETE is changed to SET NULL
