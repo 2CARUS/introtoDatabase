@@ -50,7 +50,7 @@ class Ui_toolhouse(object):
         column_names = []
         try:
             column_names = [names[0] for names in cursor.description]
-        except (TypeError, UnboundLocalError) as e:
+        except (TypeError, UnboundLocalError,AttributeError) as e:
             self.error_msg(e)
         self.tableWidget.setColumnCount(len(column_names))
         i = 0
@@ -67,18 +67,20 @@ class Ui_toolhouse(object):
     def table_update(self, cursor):
         self.clear_table()
         self.set_table_headings(cursor)
-
-        # puts whatever the query was into the table widget
-        for row_number, row_data in enumerate(cursor):
-            self.tableWidget.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.tableWidget.setItem(
-                    row_number,
-                    column_number,
-                    QtWidgets.QTableWidgetItem(
-                        str(data)
+        try:
+            # puts whatever the query was into the table widget
+            for row_number, row_data in enumerate(cursor):
+                self.tableWidget.insertRow(row_number)
+                for column_number, data in enumerate(row_data):
+                    self.tableWidget.setItem(
+                        row_number,
+                        column_number,
+                        QtWidgets.QTableWidgetItem(
+                            str(data)
+                        )
                     )
-                )
+        except Exception as e:
+            self.error_msg(e)
 
     # clears the table's contents
     def clear_table(self):
@@ -96,17 +98,35 @@ class Ui_toolhouse(object):
         try:
             cursor = self.connection.execute(string)
             return cursor
-        except sqlite3.OperationalError as e:
+        except (sqlite3.OperationalError, sqlite3.IntegrityError) as e:
             self.error_msg(e)
 
     # case where pid in 3rd tab is populated
     def product_populate(self, product):
-        
+
+
+        # needed to change the supplier combobox display
+        self.supp_index = self.supp_list.index(str(product[4]))
+
         # place product tuple values into appropriate fields
         self.lineEdit_5.setText(str(product[0]))
         self.lineEdit_2.setText(str(product[1]))
         self.doubleSpinBox.setValue(float(product[2]))
         self.plainTextEdit_2.setPlainText(str(product[3]))
+        self.comboBox_3.setCurrentIndex(self.supp_index)
+
+    # pulls product details and returns list from tab_4
+    def pull_prod_details(self):
+        product = []
+
+        product.append(str(self.lineEdit_5.text()))
+        product.append(str(self.lineEdit_2.text()))
+        product.append(str(self.doubleSpinBox.value()))
+        product.append(str(self.plainTextEdit_2.toPlainText()))
+        product.append(str(self.comboBox_3.currentText()))
+
+        return product
+
 
 ### These methods are the ones that in general have the SQL statements in them
 
@@ -119,21 +139,42 @@ class Ui_toolhouse(object):
 
     # inserts new product tuple
     def new_pid(self):
-        product = []
+        product = self.pull_prod_details()
 
-        product.append(str(self.lineEdit_5.text()))
-        product.append(str(self.lineEdit_2.text()))
-        product.append(str(self.doubleSpinBox.value()))
-        product.append(str(self.plainTextEdit_2.toPlainText()))
-        product.append(str(self.spinBox.value()))
-
-        print(product)
-
-        pass # TODO
+        query ='''
+INSERT INTO product (
+                        product_id,
+                        product_name,
+                        product_price,
+                        product_desc,
+                        product_supplier_id
+                    )
+                    VALUES (
+                        '{0[0]}',
+                        '{0[1]}',
+                        '{0[2]}',
+                        '{0[3]}',
+                        '{0[4]}'
+                    );
+            '''.format(product)
+        self.simple_query(query)
+        self.get_all_products()
 
     # updates selected tuple
     def update_pid(self):
-        pass # TODO
+
+        product = self.pull_prod_details()
+
+        query = '''
+UPDATE product
+   SET product_name = '{0[1]}',
+       product_price = '{0[2]}',
+       product_desc = '{0[3]}',
+       product_supplier_id = '{0[4]}'
+ WHERE product_id = '{0[0]}';
+        '''.format(product)
+        self.simple_query(query)
+        self.get_all_products()
 
     # accept product ID from linedit box
     def accept_pid(self):
@@ -228,8 +269,13 @@ class Ui_toolhouse(object):
             SELECT supplier_id from supplier
             '''
         )
+        self.supp_list =[]
         for s in supp_id:
             self.comboBox_3.addItem(str(s[0]))
+            self.supp_list.append(str(s[0]))
+
+        ## supp list verification print
+        # print (self.supp_list)
 
     # let's try a generalized query
     def general_query(self):
@@ -329,10 +375,10 @@ class Ui_toolhouse(object):
         self.lineEdit = QtWidgets.QLineEdit(self.tab_2)
         self.lineEdit.setGeometry(QtCore.QRect(170, 310, 241, 51))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(8)
         self.lineEdit.setFont(font)
         self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit.setPlaceholderText("Paste OrderID")
+        self.lineEdit.setPlaceholderText("Paste OrderID; then ->")
 
         ##### and so on and so forth. mostly following documentation
         self.label_3 = QtWidgets.QLabel(self.tab_2)
@@ -419,6 +465,9 @@ class Ui_toolhouse(object):
         self.lineEdit_5 = QtWidgets.QLineEdit(self.tab_4)
         self.lineEdit_5.setGeometry(QtCore.QRect(260, 190, 231, 31))
         self.lineEdit_5.setObjectName("lineEdit_5")
+        self.lineEdit_5.setPlaceholderText('Paste ProdID; then ->')
+
+
         self.label_14 = QtWidgets.QLabel(self.tab_4)
         self.label_14.setGeometry(QtCore.QRect(10, 190, 301, 25))
         font = QtGui.QFont()
@@ -522,7 +571,7 @@ class Ui_toolhouse(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.875pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Here you can edit the total product storage of the whole Toolhouse system. You can look up all the individual product ID\'s and edit their corrosponding fields. To enter new product, simply leave the product ID field blank.</span></p></body></html>"))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600;\">Here you can edit the total product storage of the whole Toolhouse system. You can look up all the individual product ID\'s and edit their corrosponding fields. When inserting product, enter new unique ID.</span></p></body></html>"))
         self.pushButton_10.setText(_translate("toolhouse", "Get Product"))
         self.label_15.setText(_translate("toolhouse", "Supplier:"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_4), _translate("toolhouse", "Inventory Edit"))
