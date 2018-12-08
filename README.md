@@ -21,9 +21,9 @@ Notes:
 
 - In the case where a table's composite PK is also a FK
 
-ON DELETE and ON UPDATE are set to CASCASE
+        ON DELETE and ON UPDATE are set to CASCASE
 
 
 - In the case where a table simple has a FK
 
-ON DELETE is changed to SET NULL
+        ON DELETE is changed to SET NULL
