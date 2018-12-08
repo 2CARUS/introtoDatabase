@@ -281,8 +281,10 @@ UPDATE product
     def general_query(self):
         user_query = self.plainTextEdit.toPlainText()
         ## extremely vulerable to sql injection
-        #TODO if insert or delete, don't update tablwidget somehow; probably simple query here
-        self.query(user_query)
+        print('work in progress')
+        # prase user_query
+        ## SELECT, call self.query
+        ## CREATE, UPDATE, DELETE, call self.simple_query
 
 # UI stuff
     def setupUi(self, toolhouse):
