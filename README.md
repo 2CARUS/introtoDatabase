@@ -8,13 +8,15 @@ Check README.txt for more detailed info
 
 Steps to execute SE 211 Final Project:
 
-1. Navigate to folder: dist
+1. Unzip the archive
 
-2. Navigate to folder: toolhouse
+2. Navigate to folder: dist
 
-3. Scroll down to: toolhouse.exe (windows type 'Application')
+3. Navigate to folder: toolhouse
 
-4. Double click this file
+4. Scroll down to: toolhouse.exe (windows type 'Application')
+
+5. Double click this file
 
 
 Notes:
