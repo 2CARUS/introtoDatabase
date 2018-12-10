@@ -98,7 +98,7 @@ class Ui_toolhouse(object):
         try:
             cursor = self.connection.execute(string)
             return cursor
-        except (sqlite3.OperationalError, sqlite3.IntegrityError) as e:
+        except (sqlite3.OperationalError, sqlite3.IntegrityError, sqlite3.Warning) as e:
             self.error_msg(e)
 
     # case where pid in 3rd tab is populated
