@@ -281,7 +281,7 @@ UPDATE product
     def general_query(self):
         user_query = self.plainTextEdit.toPlainText()
         ## extremely vulerable to sql injection
-        self.simple_query(user_query)
+        self.query(user_query)
 
 # UI stuff
     def setupUi(self, toolhouse):
