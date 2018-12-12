@@ -3,8 +3,7 @@
 # Do things the hard way for a long time
 #   then learn efficiencies
 
-
-# version for 16:9 ratio
+# for 3:2 aspect ratio
 
 # from PyQt5.QtCore import pyqtSlot
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -145,7 +144,7 @@ class Ui_toolhouse(object):
         product = self.pull_prod_details()
 
         query ='''
-    INSERT INTO product (
+INSERT INTO product (
                         product_id,
                         product_name,
                         product_price,
@@ -169,12 +168,12 @@ class Ui_toolhouse(object):
         product = self.pull_prod_details()
 
         query = '''
-    UPDATE product
+UPDATE product
    SET product_name = '{0[1]}',
        product_price = '{0[2]}',
        product_desc = '{0[3]}',
        product_supplier_id = '{0[4]}'
-    WHERE product_id = '{0[0]}';
+ WHERE product_id = '{0[0]}';
         '''.format(product)
         self.simple_query(query)
         self.get_all_products()
@@ -290,11 +289,12 @@ class Ui_toolhouse(object):
     def setupUi(self, toolhouse):
         # establish database connection
         self.database_connect()
+
         # create base window
         toolhouse.setObjectName("toolhouse")
-        toolhouse.resize(650, 700)
+        toolhouse.resize(1449, 1189)
         self.tabWidget = QtWidgets.QTabWidget(toolhouse)
-        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 641, 361))
+        self.tabWidget.setGeometry(QtCore.QRect(0, 0, 1401, 701))
         font = QtGui.QFont()
         font.setBold(False)
         font.setWeight(50)
@@ -308,7 +308,7 @@ class Ui_toolhouse(object):
         # for tab 1, create
         ## create combo box, dropdown box
         self.comboBox = QtWidgets.QComboBox(self.tab)
-        self.comboBox.setGeometry(QtCore.QRect(160, 50, 451, 51))
+        self.comboBox.setGeometry(QtCore.QRect(290, 400, 451, 51))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.comboBox.setFont(font)
@@ -319,7 +319,7 @@ class Ui_toolhouse(object):
 
         ## create label to go in front of dropdown box
         self.label = QtWidgets.QLabel(self.tab)
-        self.label.setGeometry(QtCore.QRect(10, 50, 141, 31))
+        self.label.setGeometry(QtCore.QRect(10, 410, 281, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label.setFont(font)
@@ -337,7 +337,7 @@ class Ui_toolhouse(object):
 
         ## create label to go in front of other dropdown box
         self.label_5 = QtWidgets.QLabel(self.tab)
-        self.label_5.setGeometry(QtCore.QRect(10, 110, 141, 41))
+        self.label_5.setGeometry(QtCore.QRect(10, 470, 271, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_5.setFont(font)
@@ -345,7 +345,7 @@ class Ui_toolhouse(object):
 
         ## create second combo box 
         self.comboBox_2 = QtWidgets.QComboBox(self.tab)
-        self.comboBox_2.setGeometry(QtCore.QRect(160, 110, 451, 51))
+        self.comboBox_2.setGeometry(QtCore.QRect(290, 460, 451, 51))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.comboBox_2.setFont(font)
@@ -357,7 +357,7 @@ class Ui_toolhouse(object):
 
         ## create submit button
         self.pushButton_11 = QtWidgets.QPushButton(self.tab)
-        self.pushButton_11.setGeometry(QtCore.QRect(450,220, 181, 71))
+        self.pushButton_11.setGeometry(QtCore.QRect(770, 400, 271, 111))
         self.pushButton_11.setObjectName("pushButton_11")
         self.pushButton_11.clicked.connect(self.get_store_info)
 
@@ -368,13 +368,13 @@ class Ui_toolhouse(object):
 
         ## create button to get all orders
         self.pushButton = QtWidgets.QPushButton(self.tab_2)
-        self.pushButton.setGeometry(QtCore.QRect(0, 240, 191, 81))
+        self.pushButton.setGeometry(QtCore.QRect(10, 570, 191, 81))
         self.pushButton.setObjectName("pushButton")
         self.pushButton.clicked.connect(self.get_all_orders)
 
         ## create line edit to take in order ID
         self.lineEdit = QtWidgets.QLineEdit(self.tab_2)
-        self.lineEdit.setGeometry(QtCore.QRect(90, 70, 301, 51))
+        self.lineEdit.setGeometry(QtCore.QRect(170, 310, 241, 51))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.lineEdit.setFont(font)
@@ -383,13 +383,13 @@ class Ui_toolhouse(object):
 
         ##### and so on and so forth. mostly following documentation
         self.label_3 = QtWidgets.QLabel(self.tab_2)
-        self.label_3.setGeometry(QtCore.QRect(10, 70, 71, 41))
+        self.label_3.setGeometry(QtCore.QRect(20, 310, 141, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.textBrowser = QtWidgets.QTextBrowser(self.tab_2)
-        self.textBrowser.setGeometry(QtCore.QRect(0, 0, 571, 61))
+        self.textBrowser.setGeometry(QtCore.QRect(0, 0, 1011, 161))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.textBrowser.setFont(font)
@@ -397,7 +397,7 @@ class Ui_toolhouse(object):
 
         # submit button
         self.pushButton_6 = QtWidgets.QPushButton(self.tab_2)
-        self.pushButton_6.setGeometry(QtCore.QRect(400, 70, 150, 51))
+        self.pushButton_6.setGeometry(QtCore.QRect(500, 310, 150, 51))
         self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_6.clicked.connect(self.get_order)
 
@@ -408,50 +408,48 @@ class Ui_toolhouse(object):
         
         # create get all products button
         self.pushButton_5 = QtWidgets.QPushButton(self.tab_4)
-        self.pushButton_5.setGeometry(QtCore.QRect(10, 270, 131, 51))
+        self.pushButton_5.setGeometry(QtCore.QRect(0, 570, 241, 81))
         self.pushButton_5.setObjectName("pushButton_5")
         self.pushButton_5.clicked.connect(self.get_all_products)
 
         # insert tuple button
         self.pushButton_7 = QtWidgets.QPushButton(self.tab_4)
-        self.pushButton_7.setGeometry(QtCore.QRect(360, 130, 161, 46))
+        self.pushButton_7.setGeometry(QtCore.QRect(780, 370, 161, 46))
         self.pushButton_7.setObjectName("pushButton_7")
         self.pushButton_7.clicked.connect(self.new_pid)
 
         # update tuple button
         self.pushButton_8 = QtWidgets.QPushButton(self.tab_4)
-        self.pushButton_8.setGeometry(QtCore.QRect(360, 170, 161, 46))
+        self.pushButton_8.setGeometry(QtCore.QRect(780, 450, 161, 46))
         self.pushButton_8.setObjectName("pushButton_8")
         self.pushButton_8.clicked.connect(self.update_pid)
 
         # delete tuple button :o
         self.pushButton_9 = QtWidgets.QPushButton(self.tab_4)
-        self.pushButton_9.setGeometry(QtCore.QRect(360, 210, 161, 46))
+        self.pushButton_9.setGeometry(QtCore.QRect(780, 530, 161, 46))
         self.pushButton_9.setObjectName("pushButton_9")
         self.pushButton_9.clicked.connect(self.delete_pid)
 
         self.label_4 = QtWidgets.QLabel(self.tab_4)
-        self.label_4.setGeometry(QtCore.QRect(0, 90, 91, 25))
+        self.label_4.setGeometry(QtCore.QRect(10, 240, 181, 25))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
-
-
         self.label_12 = QtWidgets.QLabel(self.tab_4)
-        self.label_12.setGeometry(QtCore.QRect(0, 130, 81, 25))
+        self.label_12.setGeometry(QtCore.QRect(10, 300, 181, 25))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_12.setFont(font)
         self.label_12.setObjectName("label_12")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.tab_4)
-        self.lineEdit_2.setGeometry(QtCore.QRect(100, 90, 251, 31))
+        self.lineEdit_2.setGeometry(QtCore.QRect(200, 240, 291, 31))
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.plainTextEdit_2 = QtWidgets.QPlainTextEdit(self.tab_4)
-        self.plainTextEdit_2.setGeometry(QtCore.QRect(120, 180, 181, 81))
+        self.plainTextEdit_2.setGeometry(QtCore.QRect(10, 410, 481, 151))
         self.plainTextEdit_2.setObjectName("plainTextEdit_2")
         self.label_13 = QtWidgets.QLabel(self.tab_4)
-        self.label_13.setGeometry(QtCore.QRect(0, 170, 121, 25))
+        self.label_13.setGeometry(QtCore.QRect(10, 370, 291, 25))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(False)
@@ -461,32 +459,31 @@ class Ui_toolhouse(object):
 
 
         self.doubleSpinBox = QtWidgets.QDoubleSpinBox(self.tab_4)
-        self.doubleSpinBox.setGeometry(QtCore.QRect(100, 130, 79, 31))
+        self.doubleSpinBox.setGeometry(QtCore.QRect(200, 300, 79, 31))
         self.doubleSpinBox.setObjectName("doubleSpinBox")
         self.doubleSpinBox.setPrefix('$')
 
         self.lineEdit_5 = QtWidgets.QLineEdit(self.tab_4)
-        self.lineEdit_5.setGeometry(QtCore.QRect(120, 50, 231, 31))
+        self.lineEdit_5.setGeometry(QtCore.QRect(260, 190, 231, 31))
         self.lineEdit_5.setObjectName("lineEdit_5")
         self.lineEdit_5.setPlaceholderText('Paste ProdID; then ->')
 
 
         self.label_14 = QtWidgets.QLabel(self.tab_4)
-        self.label_14.setGeometry(QtCore.QRect(0, 50, 121, 25))
+        self.label_14.setGeometry(QtCore.QRect(10, 190, 301, 25))
         font = QtGui.QFont()
         font.setPointSize(10)
         font.setBold(False)
         font.setWeight(50)
         self.label_14.setFont(font)
         self.label_14.setObjectName("label_14")
-
         self.textBrowser_5 = QtWidgets.QTextBrowser(self.tab_4)
-        self.textBrowser_5.setGeometry(QtCore.QRect(0, 0, 521, 48))
+        self.textBrowser_5.setGeometry(QtCore.QRect(10, 0, 1001, 171))
         self.textBrowser_5.setObjectName("textBrowser_5")
 
         # combobox for supplier
         self.comboBox_3 = QtWidgets.QComboBox(self.tab_4)
-        self.comboBox_3.setGeometry(QtCore.QRect(420, 90, 101, 31))
+        self.comboBox_3.setGeometry(QtCore.QRect(430, 300, 200, 31))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.comboBox_3.setFont(font)
@@ -495,12 +492,12 @@ class Ui_toolhouse(object):
 
         # create button to accept product ID
         self.pushButton_10 = QtWidgets.QPushButton(self.tab_4)
-        self.pushButton_10.setGeometry(QtCore.QRect(360, 50, 150, 31))
+        self.pushButton_10.setGeometry(QtCore.QRect(500, 190, 150, 31))
         self.pushButton_10.setObjectName("pushButton_10")
         self.pushButton_10.clicked.connect(self.accept_pid)
         
         self.label_15 = QtWidgets.QLabel(self.tab_4)
-        self.label_15.setGeometry(QtCore.QRect(360, 90, 51, 25))
+        self.label_15.setGeometry(QtCore.QRect(310, 300, 111, 25))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_15.setFont(font)
@@ -510,23 +507,23 @@ class Ui_toolhouse(object):
         self.tab_9.setObjectName("tab_9")
 
         self.textBrowser_2 = QtWidgets.QTextBrowser(self.tab_9)
-        self.textBrowser_2.setGeometry(QtCore.QRect(0, 10, 541, 71))
+        self.textBrowser_2.setGeometry(QtCore.QRect(0, 30, 1011, 151))
         self.textBrowser_2.setObjectName("textBrowser_2")
 
         # create submit button for generalized query
         self.pushButton_2 = QtWidgets.QPushButton(self.tab_9)
-        self.pushButton_2.setGeometry(QtCore.QRect(360, 190, 231, 111))
+        self.pushButton_2.setGeometry(QtCore.QRect(770, 460, 231, 111))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_2.clicked.connect(self.general_query)
         
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.tab_9)
-        self.plainTextEdit.setGeometry(QtCore.QRect(0, 190, 331, 121))
+        self.plainTextEdit.setGeometry(QtCore.QRect(0, 390, 751, 261))
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.tabWidget.addTab(self.tab_9, "")
 
         # create table
         self.tableWidget = QtWidgets.QTableWidget(toolhouse)
-        self.tableWidget.setGeometry(QtCore.QRect(0, 370, 641,191))
+        self.tableWidget.setGeometry(QtCore.QRect(10, 710, 1431, 401))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.clear_table()
@@ -534,7 +531,7 @@ class Ui_toolhouse(object):
 
         # create clear table button
         self.pushButton_3 = QtWidgets.QPushButton(toolhouse)
-        self.pushButton_3.setGeometry(QtCore.QRect(420, 570, 221, 46))
+        self.pushButton_3.setGeometry(QtCore.QRect(1210, 1130, 221, 46))
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_3.clicked.connect(self.clear_table)
 
