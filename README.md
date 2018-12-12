@@ -2,7 +2,8 @@
 
 
 # IMPORTANT:
-This file takes a long time to open, please be patient
+- This file takes a long time to open, please be patient
+- Please make sure aspect ratio is 16:9, unless downloading from 3by2 branch
 
 
 # Steps to execute SE 211 Final Project:
