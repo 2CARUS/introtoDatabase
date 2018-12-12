@@ -1,6 +1,11 @@
 # introtoDatabase
 
-Steps to execute SE 211 Final Project:
+
+#IMPORTANT:
+This file takes a long time to open, please be patient
+
+
+#Steps to execute SE 211 Final Project:
 
 1. Download as ZIP
 
@@ -15,7 +20,7 @@ Steps to execute SE 211 Final Project:
 6. Double click this file
 
 
-In the case where the toolhouse.db is irreparable:
+#In the case where the toolhouse.db is irreparable:
 
 0. Close the program
 
