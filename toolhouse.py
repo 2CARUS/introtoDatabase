@@ -3,6 +3,9 @@
 # Do things the hard way for a long time
 #   then learn efficiencies
 
+
+# version for 16:9 ratio
+
 # from PyQt5.QtCore import pyqtSlot
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3
